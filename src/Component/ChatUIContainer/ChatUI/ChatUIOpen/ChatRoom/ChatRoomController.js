@@ -1,28 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./ChatRoomController.module.css";
 import UploadFile from "./UploadFile";
 
-const ChatRoomController = (props)=>{
-    const submitHandler = (e) => {
-        e.preventDefault();
-        console.log("submitted");
-      };
-    
-      const uploadHandler = (e) => {
-        e.preventDefault();
-        console.log("uploaded");
-      };
-    
-      return (
-        <div>
-          <UploadFile onUpload={uploadHandler} />
-          <form onSubmit={submitHandler}>
-            <label></label>
-            <input type="text" onChange={(e) => console.log(e.target.value)} />
-            <button type="submit"></button>
-          </form>
-        </div>
-      );
-}
+const ChatRoomController = (props) => {
+  const [content, setContent] = useState("");
+
+  const onChangeHandler = (e) => setContent((prevState) => e.target.value);
+
+  const submitChatHandler = (e) => {
+    e.preventDefault();
+    const {curUserId , curUser} = props.userInfo;
+    console.log(curUserId , curUser)
+    props.addChat(props.currentRoom,curUserId , curUser,content)
+    setContent("");
+  };
+
+  const uploadHandler = (e) => {
+    e.preventDefault();
+    console.log("uploaded");
+  };
+
+  return (
+    <div>
+      <UploadFile onUpload={uploadHandler} />
+      <form onSubmit={submitChatHandler}>
+        <label></label>
+        <input type="text" value={content} onChange={onChangeHandler} />
+        <button type="submit">보내기</button>
+      </form>
+    </div>
+  );
+};
 
 export default ChatRoomController;

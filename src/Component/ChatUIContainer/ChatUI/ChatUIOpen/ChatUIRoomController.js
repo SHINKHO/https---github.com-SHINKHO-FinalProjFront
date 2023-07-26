@@ -6,10 +6,10 @@ const ChatUIRoomController = (props) => {
     <div>
       <ul>
         <li>
-          <button>enter</button>
+          <button onClick={props.enterRoomHandler}>enter</button>
         </li>
         <li>
-          <button>delete</button>
+          <button onClick={props.removeRoom}>delete</button>
         </li>
       </ul>
     </div>

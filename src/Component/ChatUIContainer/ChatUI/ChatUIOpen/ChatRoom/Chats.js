@@ -1,7 +1,10 @@
 import React from "react";
 
-const Chats = ()=>{
+const Chats = (props)=>{
 
+    console.log(props.children);
+
+    return(<div>{props.children}</div>);
 }
 
 export default Chats;

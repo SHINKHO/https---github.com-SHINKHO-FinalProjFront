@@ -3,20 +3,75 @@ import "./App.css";
 import ChatUIContainer from "./Component/ChatUIContainer/ChatUIContainer.js";
 
 function App() {
-  // Each room {participants : [[names,sessions]], roomname:name}
+  const userInfo = {
+    curUser :"tester",
+    curUserId : "testId"
+  }
+  //fields something
+  //                              at 0 is owner of the room
+  // Each room {participants : [user:{userId,name},...], roomname:name}
   // [ {system} , {dept} , {team} , {DMs}...]
   //      0         1       2         3...
   const [chatRoomList, setChatRoomList] = useState([
-    { participants: [["SYSTEM", ""]], roomname: "SYSTEM" }, // system and user one-to-one connection
-    { participants: [["", ""]], roomname: "DEPARTMENT" },
-    { participants: [["", ""]], roomname: "TEAM" },
+    {
+      participants: [{ user: { uid: "SYSTEM", name: "시스템 메세지" } }],
+      roomname: "SYSTEM",
+    }, // system and user one-to-one connection
+    { participants: [{ user: { uid: "SYSTEM", name: "시스템 메세지" } }], roomname: "DEPARTMENT" },
+    { participants: [{ user: { uid: "SYSTEM", name: "시스템 메세지" } }], roomname: "TEAM" },
   ]);
+  // each index refers the room
+  //const [[{user:{uid:, name:}, content:},...],[{user:{uid:,name:},content:},...]]
+  //const   0                                    1
+  const [chats, setChats] = useState([
+    [
+      {
+        user: { uid: "SYSTEM", name: "시스템 메세지" },
+        content: "시작",
+        date: new Date()
+      },
+    ],
+    [
+    ],
+    [
+      {
+        user: { uid: "SYSTEM", name: "시스템 메세지" },
+        content: "시작",
+        date: new Date()
+      },
+    ],
+  ]);
+  //chatroom control
+  const addChatRoom = (uid = userInfo.curUserId, name = userInfo.curUser, roomname) => {
+    // Check if the room already exists
+    const roomExists = chatRoomList.some((room) => room.roomname === roomname);
 
-  const addChatRoom = ({ participants, roomname }) => {
-    setChatRoomList((prevState) => [...prevState, { participants, roomname }]);
+    if (roomExists) {
+      console.error(`Room "${roomname}" already exists.`);
+      return;
+    }
+
+    // Add the chat room with the owner as the first participant
+    setChatRoomList((prevState) => [
+      ...prevState,
+      {
+        participants: [{ user: { uid: uid, name: name }}],
+        roomname,
+      },
+    ]);
+
+    //add an array to the chats
+    setChats((prevState) => [
+      ...prevState,
+      [
+        {
+          user: { uid: uid, name: name },
+          content: `${uid}가 ${roomname}방을 만듬`,
+          date: new Date()
+        },
+      ],
+    ]);
   };
-
-  //
   const removeChatRoom = (room_idx) => {
     if (room_idx < 0) {
       //caution message : no less then 0;
@@ -28,7 +83,42 @@ function App() {
       setChatRoomList((prevState) =>
         prevState.filter((element, index) => index !== room_idx)
       );
+      setChats((prevState) =>
+        prevState.filter((element, index) => index !== room_idx)
+      );
     }
+  };
+  //chat controll
+  const addNewChat = (room_idx, uid, name, content) => {
+    // Create a new chat object
+    const newChat = {
+      user: { uid: uid, name: name },
+      content: content,
+      date: new Date()
+    };
+    console.log("newChat",newChat);
+    setChats((prevState) => {
+      // Clone the previous state to avoid mutating the original state directly
+      const newState = [...prevState];
+
+      // Check if the room index is within the bounds of the chat array
+      if (room_idx >= 0 && room_idx < newState.length) {
+        // Add the new chat object to the specified room's chats array
+        newState[room_idx].push(newChat);
+      } else {
+        // Handle the case when the room index is invalid (e.g., out of bounds)
+        console.error("Invalid room index:", room_idx);
+      }
+
+      return newState;
+      
+    });
+    console.log("newChats",chats)
+  };
+
+  const submitChatHandler = (e) => {
+    e.preventDefault();
+    addNewChat(0,"SYSTEM" ,"시스템 메세지" ,"checking")
   };
 
   return (
@@ -38,19 +128,15 @@ function App() {
         setChatRooms={setChatRoomList}
         addRoom={addChatRoom}
         removeRoom={removeChatRoom}
+        chats={chats}
+        addChat={addNewChat}
+        userInfo={userInfo}
       />
       <button
-        onClick={() =>
-          addChatRoom({
-            participants: [
-              ["testUser", "session1"],
-              ["testUser2", "session2"],
-              ["testUser3", "session3"],
-            ],
-            roomname: "huehue",
-          })
-        }
-      ></button>
+      onClick={submitChatHandler}
+      >
+        시스템 메세지 테스트
+      </button>
     </div>
   );
 }

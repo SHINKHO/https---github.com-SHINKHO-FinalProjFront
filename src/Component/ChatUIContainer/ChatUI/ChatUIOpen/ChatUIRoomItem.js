@@ -3,8 +3,7 @@ import styles from "./ChatUIRoomItem.module.css";
 import ChatUIRoomController from "./ChatUIRoomController";
 
 const ChatUIRoomItem = (props) => {
-  const { participants, roomname } = props;
-
+  const { participants, roomname, removeRoom, enterRoomHandler } = props;
   return (
     <li className={styles.roomItem}>
       <div>Room Name: {roomname}</div>
@@ -13,12 +12,12 @@ const ChatUIRoomItem = (props) => {
         <ul>
           {participants.map((participant, index) => (
             <li key={index}>
-              {participant[0]} - {participant[1]}
+              {participants[index].user.name}
             </li>
           ))}
         </ul>
       </div>
-      <ChatUIRoomController/>
+      <ChatUIRoomController enterRoomHandler={enterRoomHandler} removeRoom={removeRoom}/>
     </li>
   );
 };

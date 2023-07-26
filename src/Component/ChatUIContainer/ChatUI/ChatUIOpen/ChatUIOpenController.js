@@ -8,13 +8,16 @@ const ChatUIOpenController = (props) => {
     console.log("submitted");
   };
 
-
+  const inputKeyWordHandler = (e)=>{
+    props.keyWordHandler(e.target.value);
+    console.log(e.target.value)
+  }
+  
   return (
     <div>
       <form onSubmit={submitHandler}>
         <label>search</label>
-        <input type="text" onChange={(e) => console.log(e.target.value)} />
-        <button type="submit"></button>
+        <input type="text" value={props.keyWord} onChange={inputKeyWordHandler} />
       </form>
     </div>
   );
