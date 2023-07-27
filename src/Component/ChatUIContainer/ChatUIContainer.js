@@ -39,6 +39,7 @@ const ChatUIContainer = (props) => {
       ) : (
         <ChatUIClose notices={props.chatRooms[0]} addRoom={props.addRoom} />
       )}
+      
       <ChatOpenCloseButton chatroomtoggler={chatRoomToggleHandler} />
     </div>
   );

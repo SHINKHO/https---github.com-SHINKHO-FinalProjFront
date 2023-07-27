@@ -13,6 +13,7 @@ const ChatUIRoomList = (props) => {
     return (
       <ChatUIRoomItem
         key={elem.index_in_origin}
+        isOwner={elem.participants[0].user.uid === props.userInfo.curUserId}
         participants={elem.participants}
         roomname={elem.roomname}
         removeRoom={() => props.removeRoom(elem.index_in_origin)}

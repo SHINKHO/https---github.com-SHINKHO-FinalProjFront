@@ -114,10 +114,33 @@ function App() {
       
     });
     console.log("newChats",chats)
+    //some backend process remove from the joined rooms
+  };
+
+  //add user to the Room
+  const inviteUser = (uid,uname,room_idx)=> {
+    //something backend should be listed here
+    //1.checking if user is in db
+    //2.checking if user is already here
+    let participantExists = chatRoomList[room_idx].participants.some(
+      (participant) => participant.user.uid === uid
+    );
+      if(!participantExists){
+        setChatRoomList((prevState) => {
+          const newChatRoomList = [...prevState];
+          newChatRoomList[room_idx].participants.push({ user: { uid: uid, name: uname } });
+          return newChatRoomList;
+          //let the system prompt message to the invited user
+        });
+      } else{
+        //make the line red and show small text to it is already exist or not avail
+      }
+
   };
 
   const submitChatHandler = (e) => {
     e.preventDefault();
+    
     addNewChat(0,"SYSTEM" ,"시스템 메세지" ,"checking")
   };
 

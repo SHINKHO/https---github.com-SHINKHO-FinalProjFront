@@ -9,10 +9,12 @@ const ChatRoomController = (props) => {
 
   const submitChatHandler = (e) => {
     e.preventDefault();
-    const {curUserId , curUser} = props.userInfo;
-    console.log(curUserId , curUser)
-    props.addChat(props.currentRoom,curUserId , curUser,content)
-    setContent("");
+    if (content !== "" && props.currentRoom!==0) {
+      const { curUserId, curUser } = props.userInfo;
+      console.log(curUserId, curUser);
+      props.addChat(props.currentRoom, curUserId, curUser, content);
+      setContent("");
+    }
   };
 
   const uploadHandler = (e) => {

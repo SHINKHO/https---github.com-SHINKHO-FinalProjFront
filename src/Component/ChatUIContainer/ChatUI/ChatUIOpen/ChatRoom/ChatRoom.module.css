@@ -1,0 +1,6 @@
+.chats{
+    overflow-y: auto;
+    overflow-x: auto;
+    height: 90%;
+    width: 100%;
+}

@@ -7,7 +7,6 @@ import ChatRoom from "./ChatRoom/ChatRoom";
 import ChatUIRoomForm from "./ChatUIRoomForm";
 
 const ChatUIOpen = (props) => {
-  
   const [keyWord, setKeyWord] = useState("");
   const [isMakingRoom, setIsMakingRoom] = useState(false);
 
@@ -26,9 +25,10 @@ const ChatUIOpen = (props) => {
   //     ...room,
   //     index_in_origin: props.chatRooms.indexOf(room),
   //   }));
+  // 
 
   return (
-    <div>
+    <div className={styles.container}>
       {props.isEntered ? (
         <ChatRoom userInfo={props.userInfo} chats={props.chats} addChat={props.addChat} exitRoom={props.exitRoom} chatRooms={props.chatRooms} currentRoom={props.currentRoom} />
       ) : (
@@ -39,8 +39,9 @@ const ChatUIOpen = (props) => {
             addRoom={props.addRoom}
             openModalHandler={setIsMakingRoom}
             isMakingRoom={isMakingRoom}
+            userInfo={props.userInfo}
           />
-      )}
+      )}<hr/>
       {(isMakingRoom&&!props.isEntered) && <ChatUIRoomForm userInfo={props.userInfo} cancelButtonHandler={()=>setIsMakingRoom(!isMakingRoom)} addRoom={props.addRoom}/>}
       {props.isEntered ? (
         <ChatRoomController currentRoom={props.currentRoom} addChat={props.addChat} userInfo={props.userInfo}  exitRoom={props.exitHandler} />
